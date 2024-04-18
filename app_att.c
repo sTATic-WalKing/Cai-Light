@@ -46,12 +46,6 @@ static int cai_ctrl_write_callback(void *p)
 
     return 1;
 }
-int cai_ctrl_read_callback(void *p)
-{
-    ctrl[1] = app_light_get();
-    return 0;
-}
-
 
 static const attribute_t attributes[] = {
 	{ ATT_H_END - 1, 0 ,0 ,0 ,0 ,0 },
@@ -67,7 +61,7 @@ static const attribute_t attributes[] = {
 
     { 4, ATT_PERMISSIONS_READ, 2, 16, (u8*)(&primary_service), (u8*)(&cai_service), 0},
     { 0, ATT_PERMISSIONS_READ, 2, sizeof(cai_ctrl_character), (u8*)(&character), (u8*)(cai_ctrl_character), 0},
-	{ 0, ATT_PERMISSIONS_RDWR, 16, sizeof(ctrl), (u8*)(&cai_ctrl), ctrl, &cai_ctrl_write_callback, &cai_ctrl_read_callback },
+	{ 0, ATT_PERMISSIONS_RDWR, 16, sizeof(ctrl), (u8*)(&cai_ctrl), ctrl, &cai_ctrl_write_callback, 0 },
     { 0, ATT_PERMISSIONS_READ, 2, sizeof (CCCD), (u8*)(&common_CCCD), (u8*)(CCCD), 0},
 };
 

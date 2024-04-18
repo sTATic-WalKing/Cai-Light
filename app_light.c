@@ -31,23 +31,23 @@ void app_light_init()
 	gpio_set_input_en(GPIO_PD2, 1);
 }
 
+unsigned int app_light_get()
+{
+    return value[LIGHT_COLD];
+}
+
 void app_light_on()
 {
     value[LIGHT_COLD] = 1;
-    cai_ctrl_read_callback(0);
+    ctrl[1] = app_light_get();
     bls_att_pushNotifyData(CAT_CTRL_VALUE_H, ctrl, sizeof(ctrl));
 }
 
 void app_light_off()
 {
     value[LIGHT_COLD] = 0;
-    cai_ctrl_read_callback(0);
+    ctrl[1] = app_light_get();
     bls_att_pushNotifyData(CAT_CTRL_VALUE_H, ctrl, sizeof(ctrl));
-}
-
-unsigned int app_light_get()
-{
-    return value[LIGHT_COLD];
 }
 
 void app_light_adv()
