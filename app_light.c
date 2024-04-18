@@ -1,7 +1,9 @@
 #include <drivers/8258/gpio_8258.h>
 #include "app_config.h"
+#include "common/types.h"
 
-static unsigned int value[] = { 0 };
+static unsigned int value[5] = { 0 };
+extern u8 ctrl[2];
 
 void app_light_init() 
 {
@@ -41,11 +43,15 @@ void app_light_loop()
 void app_light_on()
 {
     value[LIGHT_COLD] = 1;
+    cai_ctrl_read_callback(0);
+    bls_att_pushNotifyData(CAT_CTRL_VALUE_H, ctrl, sizeof(ctrl));
 }
 
 void app_light_off()
 {
     value[LIGHT_COLD] = 0;
+    cai_ctrl_read_callback(0);
+    bls_att_pushNotifyData(CAT_CTRL_VALUE_H, ctrl, sizeof(ctrl));
 }
 
 unsigned int app_light_get()

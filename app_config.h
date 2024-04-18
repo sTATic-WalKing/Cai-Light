@@ -22,6 +22,31 @@ extern "C" {
 
 #include <vendor/common/default_config.h>
 
+typedef enum
+{
+	ATT_H_START = 0,
+
+	GAP_H,
+	GAP_DEVICE_NAME_CHARACTER_H,
+	GAP_DEVICE_NAME_VALUE_H,
+
+	GATT_H,
+	GATT_SERVICE_CHANGED_CHARACTER_H,
+	GATT_SERVICE_CHANGED_VALUE_H,
+    GATT_SERVICE_CHANGED_CCCD_H,
+
+    CAI_H,
+    CAT_CTRL_CHARACTER_H,
+    CAT_CTRL_VALUE_H,
+    CAT_CTRL_CCCD_H,
+
+	ATT_H_END,
+
+} ATT_HANDLE;
+
+int cai_ctrl_read_callback(void *p);
+
+
 #if defined(__cplusplus)
 }
 #endif
