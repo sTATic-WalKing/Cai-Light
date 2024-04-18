@@ -31,15 +31,6 @@ void app_light_init()
 	gpio_set_input_en(GPIO_PD2, 1);
 }
 
-void app_light_loop() 
-{
-    gpio_write(GPIO_PC2, value[0]); 
-	gpio_write(GPIO_PC3, value[1]); 
-	gpio_write(GPIO_PC4, value[2]); 
-	gpio_write(GPIO_PB4, value[3]); 
-	gpio_write(GPIO_PB5, value[4]);
-}
-
 void app_light_on()
 {
     value[LIGHT_COLD] = 1;
@@ -78,4 +69,25 @@ void app_light_connect()
     value[LIGHT_BLUE] = 0;
 	value[LIGHT_GREEN] = 1;
     value[LIGHT_RED] = 0;
+}
+
+static unsigned int before = 1;
+void app_light_loop() 
+{
+    gpio_write(GPIO_PC2, value[0]); 
+	gpio_write(GPIO_PC3, value[1]); 
+	gpio_write(GPIO_PC4, value[2]); 
+	gpio_write(GPIO_PB4, value[3]); 
+	gpio_write(GPIO_PB5, value[4]);
+
+    unsigned int current = gpio_read(GPIO_PD2);
+    if (before == 0 && current != 0) {
+        app_uart_tx("clicked\n", 9);
+        if (app_light_get()) {
+            app_light_off();
+        } else {
+            app_light_on();
+        }
+    }
+    before = current;
 }
