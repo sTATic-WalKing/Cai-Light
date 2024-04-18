@@ -24,11 +24,11 @@ static const u16 gatt_service_change = GATT_UUID_SERVICE_CHANGE;
 static u16 service_change[2] = { 0 };
 
 static const u16 common_CCCD = GATT_UUID_CLIENT_CHAR_CFG;
-static u8 CCCD[2] = { 1, 0 };
+static u8 CCCD[2] = { 0, 0 };
 
 static const u8 cai_service[16] = { CAI_SERVICE };
 static const u8 cai_ctrl_character[] = {
-	CHAR_PROP_READ | CHAR_PROP_WRITE_WITHOUT_RSP,
+	CHAR_PROP_READ | CHAR_PROP_WRITE_WITHOUT_RSP | CHAR_PROP_INDICATE,
 	U16_LO(CAT_CTRL_VALUE_H), U16_HI(CAT_CTRL_VALUE_H),
 	CAI_CTRL,
 };
@@ -57,12 +57,12 @@ static const attribute_t attributes[] = {
 	{ 4, ATT_PERMISSIONS_READ, 2, 2, (u8*)(&primary_service), (u8*)(&gatt_service), 0 },
 	{ 0, ATT_PERMISSIONS_READ, 2, sizeof(gatt_service_change_character), (u8*)(&character), (u8*)(gatt_service_change_character), 0 },
 	{ 0, ATT_PERMISSIONS_READ, 2, sizeof(service_change), (u8*)(&gatt_service_change), (u8*)(&service_change), 0 },
-    { 0, ATT_PERMISSIONS_READ, 2, sizeof (CCCD), (u8*)(&common_CCCD), (u8*)(CCCD), 0},
+    { 0, ATT_PERMISSIONS_RDWR, 2, sizeof(CCCD), (u8*)(&common_CCCD), (u8*)(CCCD), 0},
 
     { 4, ATT_PERMISSIONS_READ, 2, 16, (u8*)(&primary_service), (u8*)(&cai_service), 0},
     { 0, ATT_PERMISSIONS_READ, 2, sizeof(cai_ctrl_character), (u8*)(&character), (u8*)(cai_ctrl_character), 0},
 	{ 0, ATT_PERMISSIONS_RDWR, 16, sizeof(ctrl), (u8*)(&cai_ctrl), ctrl, &cai_ctrl_write_callback, 0 },
-    { 0, ATT_PERMISSIONS_READ, 2, sizeof (CCCD), (u8*)(&common_CCCD), (u8*)(CCCD), 0},
+    { 0, ATT_PERMISSIONS_RDWR, 2, sizeof(CCCD), (u8*)(&common_CCCD), (u8*)(CCCD), 0},
 };
 
 void app_att_init()
